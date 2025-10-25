@@ -80,6 +80,50 @@ public class AddStudentPanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == AddButton){
+            String studentName = NameField.getText().trim();
+            String studentAge = AgeField.getText().trim();
+            String studentGender = gender.getSelectedItem().toString();
+            String studentDepartment = departmentField.getText().trim();
+            String studentGPA = GPAField.getText().trim();
+            String studentID = IDField.getText().trim();
+            if(studentName.isEmpty()||
+                    studentAge.isEmpty() ||
+                    studentGender.isEmpty() ||
+                    studentDepartment.isEmpty() ||
+                    studentGPA.isEmpty())
+                {
+                    JOptionPane.showMessageDialog(this,
+                            "Please fill in all fields!",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            try {
+                int age = Integer.parseInt(studentAge);
+                if (age <= 0) {
+                    JOptionPane.showMessageDialog(this, "Age cannot be negative", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Age must be integer", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            try {
+                double gpa = Double.parseDouble(studentGPA);
+                if (gpa < 0.0 || gpa > 4.0) {
+                    JOptionPane.showMessageDialog(this, "GPA must be between 0.0 and 4.0", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Invalid GPA", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if(!isValidString(studentName)){
+                JOptionPane.showMessageDialog(this, "Name can only contain letters and spaces", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            if(!isValidString(studentDepartment)){
+                JOptionPane.showMessageDialog(this, "Department can only contain letters and spaces", "Error", JOptionPane.ERROR_MESSAGE);
+            }
 
         }
     }
