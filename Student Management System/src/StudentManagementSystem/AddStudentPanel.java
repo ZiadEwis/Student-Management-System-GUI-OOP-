@@ -6,78 +6,81 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class AddStudentPanel extends JPanel implements ActionListener {
-
+    JButton AddButton;
     AddStudentPanel() {
+        // Common font
+        Font fieldFont = new Font("SansSerif", Font.PLAIN, 16);
+
         // Name field
-        JPanel NamePanel = new JPanel();
-        NamePanel.setSize(30, 50);
+        JPanel NamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         JLabel Name = new JLabel("Name");
+        Name.setFont(fieldFont);
+        JTextField NameField = new JTextField(20);
+        NameField.setFont(fieldFont);
         NamePanel.add(Name);
-        JTextField NameField = new JTextField();
-        NameField.setColumns(30);
         NamePanel.add(NameField);
-        NameField.setPreferredSize(new Dimension(30, 30));
 
         // Age field
-        JPanel AgePanel = new JPanel();
+        JPanel AgePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         JLabel age = new JLabel("Age");
+        age.setFont(fieldFont);
+        JTextField AgeField = new JTextField(20);
+        AgeField.setFont(fieldFont);
         AgePanel.add(age);
-        JTextField AgeField = new JTextField();
-        AgeField.setColumns(30);
-        AgeField.setPreferredSize(new Dimension(30, 30));
         AgePanel.add(AgeField);
 
         // Gender field
-        JPanel GenderPanel = new JPanel();
+        JPanel GenderPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         JLabel genderLabel = new JLabel("Gender");
+        genderLabel.setFont(fieldFont);
+        JComboBox<String> gender = new JComboBox<>(new String[] { "Male", "Female" });
+        gender.setFont(fieldFont);
         GenderPanel.add(genderLabel);
-        JComboBox<String> gender = new JComboBox<>();
-        gender.setModel(new DefaultComboBoxModel<>(new String[] { "Male", "Female" }));
         GenderPanel.add(gender);
 
-
         // Department field
-        JPanel DepartmentPanel = new JPanel();
-        JTextField departmentField = new JTextField();
+        JPanel DepartmentPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         JLabel department = new JLabel("Department");
+        department.setFont(fieldFont);
+        JTextField departmentField = new JTextField(20);
+        departmentField.setFont(fieldFont);
         DepartmentPanel.add(department);
-        departmentField.setColumns(30);
-        departmentField.setPreferredSize(new Dimension(30, 30));
         DepartmentPanel.add(departmentField);
 
         // GPA field
-        JPanel GPAPanel = new JPanel();
+        JPanel GPAPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         JLabel GPA = new JLabel("GPA");
+        GPA.setFont(fieldFont);
+        JTextField GPAField = new JTextField(20);
+        GPAField.setFont(fieldFont);
         GPAPanel.add(GPA);
-        JTextField GPAField = new JTextField();
-        GPAField.setColumns(30);
-        GPAField.setPreferredSize(new Dimension(30, 30));
         GPAPanel.add(GPAField);
 
-        JButton AddButton = new JButton("Add Student");
+        // Submit button
+        AddButton = new JButton("Add Student");
         AddButton.addActionListener(this);
         AddButton.setFocusable(false);
-        AddButton.setPreferredSize(new Dimension(150, 40));
-
-        JPanel ButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        AddButton.setPreferredSize(new Dimension(180, 45));
+        AddButton.setFont(new Font("SansSerif", Font.BOLD, 16));
+        JPanel ButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 20));
         ButtonPanel.add(AddButton);
-        JPanel CenterWrapper = new JPanel(new BorderLayout());
-        CenterWrapper.add(ButtonPanel, BorderLayout.CENTER);
 
-        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        setAlignmentY(Component.TOP_ALIGNMENT);
-        setAlignmentX(Component.LEFT_ALIGNMENT);
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setBorder(BorderFactory.createEmptyBorder(40, 80, 40, 80));
 
-
-        this.add(NamePanel);
-        this.add(AgePanel );
-        this.add(GenderPanel);
-        this.add(DepartmentPanel);
-        this.add(GPAPanel);
-        this.add(CenterWrapper);
+        add(NamePanel);
+        add(AgePanel);
+        add(GenderPanel);
+        add(DepartmentPanel);
+        add(GPAPanel);
+        add(Box.createVerticalStrut(20));
+        add(ButtonPanel);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == AddButton){
+
+        }
     }
 }
