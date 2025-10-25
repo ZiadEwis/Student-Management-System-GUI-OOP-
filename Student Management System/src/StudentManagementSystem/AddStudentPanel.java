@@ -127,4 +127,14 @@ public class AddStudentPanel extends JPanel implements ActionListener {
 
         }
     }
+    private boolean isValidString(String s) {
+        if (s == null || s.isEmpty()) return false;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (!Character.isLetter(c) && c != ' ') {
+                return false;
+            }
+        }
+        return true;
+    }
 }
