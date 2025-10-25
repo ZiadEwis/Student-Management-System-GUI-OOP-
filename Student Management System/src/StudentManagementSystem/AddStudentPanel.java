@@ -4,11 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class AddStudentPanel extends JPanel implements ActionListener {
+    private StudentManager manager;
+
     JButton AddButton;
     JTextField NameField;
     JTextField AgeField;
@@ -17,7 +17,9 @@ public class AddStudentPanel extends JPanel implements ActionListener {
     JTextField GPAField;
     JPanel ButtonPanel;
     JTextField IDField;
-    AddStudentPanel() {
+    AddStudentPanel(StudentManager manager) {
+        this.manager = manager;
+
         // Common font
         Font fieldFont = new Font("SansSerif", Font.PLAIN, 16);
 
@@ -123,7 +125,7 @@ public class AddStudentPanel extends JPanel implements ActionListener {
             try {
                 age = Integer.parseInt(studentAge);
                 if (age <= 0) {
-                    JOptionPane.showMessageDialog(this, "Age cannot be negative", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Age must be positive", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
             } catch (NumberFormatException ex) {
@@ -142,9 +144,11 @@ public class AddStudentPanel extends JPanel implements ActionListener {
             }
             if(!isValidString(studentName)){
                 JOptionPane.showMessageDialog(this, "Name can only contain letters and spaces", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             if(!isValidString(studentDepartment)){
                 JOptionPane.showMessageDialog(this, "Department can only contain letters and spaces", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             if(studentID.isEmpty())
             {
@@ -152,9 +156,13 @@ public class AddStudentPanel extends JPanel implements ActionListener {
             }
             else{
                 try {
-                    id = Integer.parseInt(studentAge);
+                    id = Integer.parseInt(studentID);
                     if (id <= 0) {
                         JOptionPane.showMessageDialog(this, "ID cannot be negative", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    if (manager.searchStudent(id) != null) { // <<< FIXED
+                        JOptionPane.showMessageDialog(this, "This ID already exists! Please choose another one.", "Duplicate ID", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
                 } catch (NumberFormatException ex) {
@@ -164,6 +172,10 @@ public class AddStudentPanel extends JPanel implements ActionListener {
             }
             Student s = new Student(id, studentName, age, studentGender, studentDepartment, gpa);
             manager.addStudent(s);
+            saveStudentToFile(s);
+
+            JOptionPane.showMessageDialog(this, "Student added successfully (ID: " + id + ")", "Success", JOptionPane.INFORMATION_MESSAGE);
+            clearFields();
         }
     }
     private boolean isValidString(String s) {
@@ -175,6 +187,14 @@ public class AddStudentPanel extends JPanel implements ActionListener {
             }
         }
         return true;
+    }
+    private void clearFields() {
+        IDField.setText("");
+        NameField.setText("");
+        AgeField.setText("");
+        departmentField.setText("");
+        GPAField.setText("");
+        gender.setSelectedIndex(0);
     }
     private int generateUniqueID(String filePath) {
         int maxID = 0;
@@ -194,11 +214,19 @@ public class AddStudentPanel extends JPanel implements ActionListener {
                 }
             }
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Error reading file: " + e.getMessage(),
-                    "File Error", JOptionPane.ERROR_MESSAGE);
+            return 1;
         }
-
         return maxID + 1;
     }
-
+    private void saveStudentToFile(Student s) {
+        try (FileWriter fw = new FileWriter("Students.txt", true);
+             BufferedWriter bw = new BufferedWriter(fw)) {
+            bw.write(s.getStudentID() + "," + s.getFullName() + "," + s.getAge() + "," +
+                    s.getGender() + "," + s.getDepartment() + "," + s.getGPA());
+            bw.newLine();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error saving to file: " + e.getMessage(),
+                    "File Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }
