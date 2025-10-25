@@ -54,19 +54,30 @@ public class AddStudentPanel extends JPanel implements ActionListener {
         GPAField.setPreferredSize(new Dimension(30, 30));
         GPAPanel.add(GPAField);
 
+        JButton AddButton = new JButton("Add Student");
+        AddButton.addActionListener(this);
+        AddButton.setFocusable(false);
+        AddButton.setPreferredSize(new Dimension(150, 40));
+
+        JPanel ButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        ButtonPanel.add(AddButton);
+        JPanel CenterWrapper = new JPanel(new BorderLayout());
+        CenterWrapper.add(ButtonPanel, BorderLayout.CENTER);
+
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         setAlignmentY(Component.TOP_ALIGNMENT);
         setAlignmentX(Component.LEFT_ALIGNMENT);
+
 
         this.add(NamePanel);
         this.add(AgePanel );
         this.add(GenderPanel);
         this.add(DepartmentPanel);
         this.add(GPAPanel);
+        this.add(CenterWrapper);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
     }
 }
