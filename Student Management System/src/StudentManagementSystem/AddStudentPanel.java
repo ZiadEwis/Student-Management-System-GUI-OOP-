@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class AddStudentPanel extends JPanel implements ActionListener {
     JButton AddButton;
@@ -102,6 +105,9 @@ public class AddStudentPanel extends JPanel implements ActionListener {
             String studentDepartment = departmentField.getText().trim();
             String studentGPA = GPAField.getText().trim();
             String studentID = IDField.getText().trim();
+            int age;
+            double gpa;
+            int id;
             if(studentName.isEmpty()||
                     studentAge.isEmpty() ||
                     studentGender.isEmpty() ||
@@ -115,7 +121,7 @@ public class AddStudentPanel extends JPanel implements ActionListener {
                     return;
                 }
             try {
-                int age = Integer.parseInt(studentAge);
+                age = Integer.parseInt(studentAge);
                 if (age <= 0) {
                     JOptionPane.showMessageDialog(this, "Age cannot be negative", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -125,7 +131,7 @@ public class AddStudentPanel extends JPanel implements ActionListener {
                 return;
             }
             try {
-                double gpa = Double.parseDouble(studentGPA);
+                gpa = Double.parseDouble(studentGPA);
                 if (gpa < 0.0 || gpa > 4.0) {
                     JOptionPane.showMessageDialog(this, "GPA must be between 0.0 and 4.0", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -140,9 +146,25 @@ public class AddStudentPanel extends JPanel implements ActionListener {
             if(!isValidString(studentDepartment)){
                 JOptionPane.showMessageDialog(this, "Department can only contain letters and spaces", "Error", JOptionPane.ERROR_MESSAGE);
             }
-
+            if(studentID.isEmpty())
+            {
+                id = generateUniqueID("Students.txt");
+            }
+            else{
+                try {
+                    id = Integer.parseInt(studentAge);
+                    if (id <= 0) {
+                        JOptionPane.showMessageDialog(this, "ID cannot be negative", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(this, "ID must be integer", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+            Student s = new Student(id, studentName, age, studentGender, studentDepartment, gpa);
+            manager.addStudent(s);
         }
-
     }
     private boolean isValidString(String s) {
         if (s == null || s.isEmpty()) return false;
@@ -154,4 +176,29 @@ public class AddStudentPanel extends JPanel implements ActionListener {
         }
         return true;
     }
+    private int generateUniqueID(String filePath) {
+        int maxID = 0;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                if (line.trim().isEmpty()) continue;
+                String[] parts = line.split(",");
+                try {
+                    int id = Integer.parseInt(parts[0].trim());
+                    if (id > maxID) {
+                        maxID = id;
+                    }
+                } catch (NumberFormatException e) {
+                }
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error reading file: " + e.getMessage(),
+                    "File Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        return maxID + 1;
+    }
+
 }
