@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 public class AddStudentPanel extends JPanel implements ActionListener {
 
     AddStudentPanel() {
-
         // Name field
         JPanel NamePanel = new JPanel();
         NamePanel.setSize(300, 50);
@@ -34,10 +33,21 @@ public class AddStudentPanel extends JPanel implements ActionListener {
         JComboBox<String> gender = new JComboBox<>();
         gender.setModel(new DefaultComboBoxModel<>(new String[] { "Male", "Female" }));
         GenderPanel.add(gender);
-        setLayout(new GridLayout(2, 1, 10, 1));
+
+        // Department field
+        JPanel DepartmentPanel = new JPanel();
+        JTextField departmentField = new JTextField();
+        JLabel department = new JLabel("Department");
+        DepartmentPanel.add(department);
+        departmentField.setColumns(75);
+        departmentField.setPreferredSize(new Dimension(200, 75));
+        DepartmentPanel.add(departmentField);
+
+        setLayout(new GridLayout(0, 1, 10, 0));
         this.add(NamePanel);
         this.add(AgePanel);
         this.add(GenderPanel);
+        this.add(DepartmentPanel);
     }
 
     @Override
