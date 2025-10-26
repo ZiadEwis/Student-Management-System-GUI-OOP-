@@ -109,7 +109,7 @@ public class DeleteStudentPanel extends JPanel {
     private void loadTable() {
         tableModel.setRowCount(0); // Clear existing data
         
-        for (Student student : manager.students) {
+        for (Student student : manager.getStudents()) {
             Object[] row = {
                 student.getStudentID(),
                 student.getFullName(),
@@ -122,7 +122,7 @@ public class DeleteStudentPanel extends JPanel {
         }
         
         // Update status label with current count
-        statusLabel.setText("Total Students: " + manager.students.size() + " - Select one to delete");
+        statusLabel.setText("Total Students: " + manager.getStudents().size() + " - Select one to delete");
     }
 
     public void refresh() {

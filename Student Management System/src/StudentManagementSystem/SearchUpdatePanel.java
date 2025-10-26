@@ -5,12 +5,14 @@ import java.awt.*;
 import java.util.List;
 
 public class SearchUpdatePanel extends JPanel {
+    private StudentManager manager;
     private JTextField searchField, editId, editName, editAge, editDept, editGpa;
     private JComboBox<String> editGender;
     private JTable table;
     private StudentTableModel model;
 
     public SearchUpdatePanel(StudentManager manager) {
+        this.manager = manager;
         setLayout(new BorderLayout());
         setBackground(new Color(245,245,247));
 
@@ -117,6 +119,10 @@ public class SearchUpdatePanel extends JPanel {
         String dept = editDept.getText().trim();
         String gpaStr = editGpa.getText().trim();
         String gender = (String) editGender.getSelectedItem();
+        if (gender == null) {
+            JOptionPane.showMessageDialog(this, "Please select a gender");
+            return;
+        }
 
         String err = validateInputs(name, ageStr, dept, gpaStr);
         if (err != null) {
@@ -129,9 +135,25 @@ public class SearchUpdatePanel extends JPanel {
         double gpa = Double.parseDouble(gpaStr);
 
         Student updated = new Student(id, name, age, gender, dept, (float) gpa);
-        manager.updateStudent(updated.getStudentID(),updated.getFullName(),updated.getAge(),updated.getGender(),updated.getDepartment(),updated.getGPA());
+        manager.updateStudent(updated);
+        refreshAllTabs();
         model.setData(manager.getStudents());
         JOptionPane.showMessageDialog(this, "Student updated successfully!");
+    }
+
+    private void refreshAllTabs() {
+        Component parent = this.getParent();
+        while (parent != null && !(parent instanceof JTabbedPane)) {
+            parent = parent.getParent();
+        }
+        if (parent instanceof JTabbedPane tabs) {
+            for (int i = 0; i < tabs.getTabCount(); i++) {
+                Component c = tabs.getComponentAt(i);
+                if (c instanceof ViewStudentPanel) ((ViewStudentPanel) c).refresh();
+                if (c instanceof DeleteStudentPanel) ((DeleteStudentPanel) c).refresh();
+                if (c instanceof SearchUpdatePanel) ((SearchUpdatePanel) c).refresh();
+            }
+        }
     }
 
     private String validateInputs(String name, String ageStr, String dept, String gpaStr) {
@@ -156,6 +178,10 @@ public class SearchUpdatePanel extends JPanel {
         b.setBackground(new Color(0,153,204));
         b.setForeground(Color.WHITE);
         b.setFocusPainted(false);
+    }
+
+    public void refresh() {
+        model.setData(manager.getStudents());
     }
 }
 

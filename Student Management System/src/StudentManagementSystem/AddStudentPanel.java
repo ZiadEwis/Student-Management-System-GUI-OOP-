@@ -174,6 +174,17 @@ public class AddStudentPanel extends JPanel implements ActionListener {
             manager.addStudent(s);
             saveStudentToFile(s);
 
+            SwingUtilities.getWindowAncestor(this).repaint();
+            if(getParent() instanceof JTabbedPane){
+                JTabbedPane tabs = (JTabbedPane) getParent();
+                for(int i=0;i<tabs.getTabCount();i++){
+                    Component c = tabs.getComponentAt(i);
+                    if(c instanceof ViewStudentPanel) ((ViewStudentPanel)c).refresh();
+                    if(c instanceof DeleteStudentPanel) ((DeleteStudentPanel)c).refresh();
+                    if(c instanceof SearchUpdatePanel) ((SearchUpdatePanel)c).refresh();
+                }
+            }
+
             JOptionPane.showMessageDialog(this, "Student added successfully (ID: " + id + ")", "Success", JOptionPane.INFORMATION_MESSAGE);
             clearFields();
         }

@@ -62,7 +62,7 @@ public class ViewStudentPanel extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
 
         // ===== Bottom Note =====
-        int studentCount = manager.students.size();
+        int studentCount = manager.getStudents().size();
         note = new JLabel("Total Students: " + studentCount, SwingConstants.RIGHT);
         note.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
         add(note, BorderLayout.SOUTH);
@@ -77,7 +77,7 @@ public class ViewStudentPanel extends JPanel {
 
     private void sortStudents() {
         // Create a new list from the manager's students
-        List<Student> list = new ArrayList<>(manager.students);
+        List<Student> list = new ArrayList<>(manager.getStudents());
         
         String sortBy = (String) sortByBox.getSelectedItem();
         String order = (String) orderBox.getSelectedItem();
@@ -122,7 +122,7 @@ public class ViewStudentPanel extends JPanel {
     }
 
     private void loadTable() {
-        loadTable(manager.students);
+        loadTable(manager.getStudents());
     }
 
     private void loadTable(List<Student> students) {
@@ -144,7 +144,7 @@ public class ViewStudentPanel extends JPanel {
     // Refresh method to update table 
     public void refresh() {
         loadTable();
-        note.setText("Total Students: " + manager.students.size());
+        note.setText("Total Students: " + manager.getStudents().size());
     }
 
     //  helper method to easily get the student that the user has selected in the GUI.
