@@ -69,6 +69,21 @@ public class DeleteStudentPanel extends JPanel {
             }
         });
     }
+    
+    private void refreshAllTabs() {
+        Component parent = this.getParent();
+        while (parent != null && !(parent instanceof JTabbedPane)) {
+            parent = parent.getParent();
+        }
+        if (parent instanceof JTabbedPane tabs) {
+            for (int i = 0; i < tabs.getTabCount(); i++) {
+                Component c = tabs.getComponentAt(i);
+                if (c instanceof ViewStudentPanel) ((ViewStudentPanel) c).refresh();
+                if (c instanceof DeleteStudentPanel) ((DeleteStudentPanel) c).refresh();
+                if (c instanceof SearchUpdatePanel) ((SearchUpdatePanel) c).refresh();
+            }
+        }
+    }
 
     private void deleteSelectedStudent() {
         int selectedRow = table.getSelectedRow();
@@ -103,6 +118,7 @@ public class DeleteStudentPanel extends JPanel {
             });
             timer.setRepeats(false);
             timer.start();
+            refreshAllTabs();
         }
     }
 

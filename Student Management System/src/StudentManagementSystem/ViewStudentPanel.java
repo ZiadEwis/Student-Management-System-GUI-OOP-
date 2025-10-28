@@ -158,6 +158,4 @@ public class ViewStudentPanel extends JPanel {
         int studentId = (int) tableModel.getValueAt(selectedRow, 0);
         return manager.searchStudent(studentId);
     }
-
-    
  }

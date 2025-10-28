@@ -184,4 +184,3 @@ public class SearchUpdatePanel extends JPanel {
         model.setData(manager.getStudents());
     }
 }
-
