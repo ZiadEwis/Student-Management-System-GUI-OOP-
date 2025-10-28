@@ -46,7 +46,6 @@ public class DeleteStudentPanel extends JPanel {
         deleteButton = new JButton("Delete Selected Student");
         deleteButton.setBackground(Color.WHITE);
         deleteButton.setForeground(Color.BLACK);
-        deleteButton.setFocusPainted(false);
         deleteButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
         // Status Label

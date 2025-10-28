@@ -26,7 +26,6 @@ public class LoginFrame extends JFrame {
         JButton loginBtn = new JButton("Login");
         loginBtn.setBackground(new Color(0,153,204));
         loginBtn.setForeground(Color.WHITE);
-        loginBtn.setFocusPainted(false);
 
         panel.add(new JLabel("Username:"));
         panel.add(userField);

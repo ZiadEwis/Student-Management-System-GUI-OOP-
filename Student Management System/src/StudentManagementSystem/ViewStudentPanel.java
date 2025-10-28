@@ -35,7 +35,6 @@ public class ViewStudentPanel extends JPanel {
 
         sortButton.setBackground(new Color(0, 153, 204));
         sortButton.setForeground(Color.BLACK);
-        sortButton.setFocusPainted(false);
         sortButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         topPanel.add(sortByBox);

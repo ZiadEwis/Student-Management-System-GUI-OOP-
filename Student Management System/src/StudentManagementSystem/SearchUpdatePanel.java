@@ -134,7 +134,7 @@ public class SearchUpdatePanel extends JPanel {
         int age = Integer.parseInt(ageStr);
         double gpa = Double.parseDouble(gpaStr);
 
-        Student updated = new Student(id, name, age, gender, dept, (float) gpa);
+        Student updated = new Student(id, name, age, gender, dept, gpa);
         manager.updateStudent(updated);
         refreshAllTabs();
         model.setData(manager.getStudents());
@@ -159,6 +159,10 @@ public class SearchUpdatePanel extends JPanel {
     private String validateInputs(String name, String ageStr, String dept, String gpaStr) {
         if (name.isEmpty() || ageStr.isEmpty() || dept.isEmpty() || gpaStr.isEmpty())
             return "Please fill all fields.";
+        if (!name.matches("^[a-zA-Z ]+$"))
+            return "Name must contain only letters and spaces.";
+        if (!dept.matches("^[a-zA-Z ]+$"))
+            return "Department must contain only letters and spaces.";
         try {
             int age = Integer.parseInt(ageStr);
             if (age < 1 || age > 150) return "Age must be 1–150.";
@@ -177,7 +181,6 @@ public class SearchUpdatePanel extends JPanel {
     private void styleButton(JButton b) {
         b.setBackground(new Color(0,153,204));
         b.setForeground(Color.WHITE);
-        b.setFocusPainted(false);
     }
 
     public void refresh() {
